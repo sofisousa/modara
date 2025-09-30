@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: modara_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_AUTHENTICATION_PLUGIN: "mysql_native_password"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      modara_net:
+        ipv4_address: 183.26.0.10
+
+  api:
+    container_name: modara_api
+    build: .
+    restart: always
+    env_file:
+      - .env
+    ports:
+    - "8808:80"
+    depends_on:
+      - db
+    volumes:
+      - ./app:/app
+    networks:
+      modara_net:
+        ipv4_address: 183.26.0.20
+
+networks:
+  modara_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 183.26.0.0/16
+          gateway: 183.26.0.1
+
+volumes:
+  mysql_data:
