@@ -1,3 +1,5 @@
+from typing import List
+
 from models.models import Site
 from schemas.site.create import CreateSite
 from schemas.site.update import UpdateSite
@@ -44,3 +46,10 @@ class SiteRepository:
         cls
     ):
         return await Site.all()
+
+    @classmethod
+    async def get_all_site_by_id_list(
+        cls,
+        id_list: List[int]
+    ):
+        return await Site.filter(id__in=id_list)
