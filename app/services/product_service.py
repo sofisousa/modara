@@ -150,3 +150,17 @@ class ProductService:
             )
             for product in filtered_products
         ]
+
+    async def add_product_site(
+        self,
+        id: int,
+        site_id: int
+    ):
+        await ProductRepository.add_product_site(id=id, site_id=site_id)
+
+    async def remove_product_site(
+        self,
+        id: int,
+        site_id: int
+    ):
+        await ProductRepository.remove_product_site(id=id, site_id=site_id)
